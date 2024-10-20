@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Driver {
     private static Map<String, List<String>> adjacencyList = new HashMap<>();
     private static Map<String, double[]> coordinatesMap = new HashMap<>(); // Stores coordinates of nodes
     private static Map<String, String> nodeNamesMap = new HashMap<>(); // Stores node names
