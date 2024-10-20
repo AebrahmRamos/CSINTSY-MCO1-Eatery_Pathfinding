@@ -7,8 +7,7 @@ public class Node {
     double longitude;
     boolean isEatery; 
 
-    public Node(int index, double latitude, double longitude, String id, boolean isEatery) {
-        this.index = index; 
+    public Node(double latitude, double longitude, String id, boolean isEatery) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.id = id;

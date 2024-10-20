@@ -1,16 +1,22 @@
 
-0, University Mall, 11, 97, TRUE
-1, McDonalds, 23, 15, TRUE
-2, Pericos, 57, 88, TRUE
-3, Bloemen, 89, 5, TRUE
-4, WH Taft Residences, 67, 94, TRUE
-5, EGI Taft, 79, 35, TRUE
-6, Castro Street, 41, 12, TRUE
-7, Agno Food Court, 65, 25, TRUE
-8, One Archers, 12, 53, TRUE
-9, La Casita, 92, 18, TRUE
-10, Green Mall, 56, 65, TRUE
-11, Green Court, 31, 43, TRUE
-12, Sherwood, 25, 91, TRUE
-13, Jollibee, 74, 30, TRUE
-14, Dagonoy Street, 8, 87, TRUE
+University Mall, 45, -8, TRUE
+McDonalds, 38.2, -7, TRUE
+Pericos, 57, 88, TRUE
+Bloemen, -25, -18, TRUE
+WH Taft Residences, -30, -9, TRUE
+EGI Taft, -40, -10, TRUE
+Castro Street, -49.8, -9, TRUE
+Agno Food Court, -52.6, -19, TRUE
+One Archers, -56, -8, TRUE
+La Casita, -65, -20, TRUE
+Green Mall, -75, -8, TRUE
+Green Court, -60, -19, TRUE
+Sherwood, -73.8, 12, TRUE
+Jollibee, -60.5, 10.4, TRUE
+Dagonoy Street, -30.5, 12, TRUE
+Andrew Canteen, -65, -8, TRUE
+Fidel Reyes, -90, -20, FALSE
+Burgundy, -10.0, 10.0, TRUE
+Estrada, 10.5, 9.5, TRUE
+D'Students Place, 27.5, 9.0, TRUE
+P. Ocampo, 48.0, 9.0, TRUE

@@ -97,13 +97,12 @@ public class Driver {
                 }
                 String[] parts = line.split(",");
                 if (parts.length >= 4) {
-                    int nodeIndex = Integer.parseInt(parts[0].trim());
-                    String nodeName = parts[1].trim();
-                    double latitude = Double.parseDouble(parts[2].trim());
-                    double longitude = Double.parseDouble(parts[3].trim());
-                    boolean isEatery = Boolean.parseBoolean(parts[4].trim()); 
+                    String nodeName = parts[0].trim();
+                    double latitude = Double.parseDouble(parts[1].trim());
+                    double longitude = Double.parseDouble(parts[2].trim());
+                    boolean isEatery = Boolean.parseBoolean(parts[3].trim()); 
 
-                    Node node = new Node(nodeIndex, latitude, longitude, nodeName, isEatery); 
+                    Node node = new Node(latitude, longitude, nodeName, isEatery); 
                     graph.addNode(node); 
                 }
             }
@@ -137,24 +136,6 @@ public class Driver {
         
     }
 
-    private static String getNextIdentifier(String currentIdentifier) {
-        StringBuilder nextIdentifier = new StringBuilder(currentIdentifier);
-        int index = nextIdentifier.length() - 1;
-
-        while (index >= 0) {
-            char currentChar = nextIdentifier.charAt(index);
-            if (currentChar == 'Z') {
-                nextIdentifier.setCharAt(index, 'A');
-                index--;
-            } else {
-                nextIdentifier.setCharAt(index, (char) (currentChar + 1));
-                return nextIdentifier.toString();
-            }
-        }
-
-        nextIdentifier.insert(0, 'A');
-        return nextIdentifier.toString();
-    }
 
     private static void bfs(String source, String destination) {
        
