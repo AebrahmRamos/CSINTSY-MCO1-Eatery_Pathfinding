@@ -29,7 +29,7 @@ public class Driver {
                     System.out.println("Select algorithm: 1 for BFS, 2 for DFS, 3 for UCS, 4 for ID-DFS, 5 for A*, 6 for Greedy BFS");
                     int choice = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
-
+                    long startTime = System.currentTimeMillis(), endTime, executionTime;
                     switch (choice) {
                         case 1 -> bfs(source, destination);
                         case 2 -> dfs(source, destination);
@@ -39,7 +39,10 @@ public class Driver {
                         case 6 -> greedyBFS(source, destination);
                         default -> System.out.println("Invalid choice");
                     }
-                    System.out.println("Visited nodes: ");
+                    // System.out.println("Visited nodes: ");
+                    endTime = System.currentTimeMillis();
+                    executionTime = endTime - startTime; 
+                    System.out.println("Execution time: " + executionTime + "ms");
                 }
 
 
@@ -117,53 +120,94 @@ public class Driver {
     
    
     private static void viewAllNodes() {
+        Map<String, LinkedList<Edge>> graphMap = graph.getGraph();
+        for (String key : graphMap.keySet()) {
+            System.out.println(key);
+        }
     }
 
     
 
     private static void bfs(String source, String destination) {
-        Map map = graph.getGraph();
-        
+        Map<String, LinkedList<Edge>> map = graph.getGraph();
+    
         Queue<String> queue = new LinkedList<>();
-        
+    
         // Set to track visited nodes
         Set<String> visited = new HashSet<>();
-
+    
+        // Map to track predecessors for reconstructing the path
+        Map<String, String> predecessors = new HashMap<>();
+    
         // Enqueue the starting node and mark it as visited
         queue.add(source);
         visited.add(source);
-
+        predecessors.put(source, null); // Source has no predecessor
+    
+        boolean found = false;
+    
+        System.out.println("Visited Nodes: ");
+        int counter = 0; // To keep track of number of nodes printed per line
+    
         while (!queue.isEmpty()) {
             String currentNode = queue.poll();
-            System.out.println("Visited: " + currentNode);
-
+    
+            // Print the current node with formatted padding and an arrow
+            System.out.printf("-> %-20s", currentNode);
+            counter++;
+    
+            // Print new line every 4 nodes for better readability
+            if (counter % 4 == 0) {
+                System.out.println();
+            }
+    
             // If the current node is the target node, stop
             if (currentNode.equals(destination)) {
-                System.out.println("Destination node " + destination + " reached.");
+                found = true;
                 break;
             }
-            LinkedList<Edge> edges = (LinkedList<Edge>) map.get(currentNode);
-
+    
+            LinkedList<Edge> edges = map.get(currentNode);
+    
             if (edges != null) {
                 for (Edge edge : edges) {
                     String neighbor = edge.dest.id;
-
+    
                     // If neighbor hasn't been visited, enqueue it
                     if (!visited.contains(neighbor)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
+                        predecessors.put(neighbor, currentNode); // Track predecessor
                     }
                 }
             }
         }
+    
+        System.out.println(); // Print a new line for better separation
+    
+        if (!found) {
+            System.out.println("No path found from " + source + " to " + destination);
+        } else {
+            LinkedList<String> path = new LinkedList<>();
+            String step = destination;
+    
+            while (step != null) {
+                path.addFirst(step);
+                step = predecessors.get(step);
+            }
+    
+            System.out.println("Best path from " + source + " to " + destination + ": " + String.join(" -> ", path));
+        }
     }
+    
+    
 
     private static void dfs(String source, String destination) {
-        
+        // Placeholder for dfs
     }
 
     private static void dfsHelper(String current, String destination, Set<String> visited) {
-        
+        // Placeholder for dfs Helper
     }
 
     private static void ucs(String source, String destination) {

@@ -80,7 +80,7 @@ public final class Graph{
         return null; 
     }
 
-    public Map getGraph (){
+    public Map<String, LinkedList<Edge>> getGraph (){
         return this.adjacencyList;
     }
 
