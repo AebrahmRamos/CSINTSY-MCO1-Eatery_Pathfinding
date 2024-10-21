@@ -1,7 +1,6 @@
-import java.util.*;
+
 
 public class Node {
-    int index; 
     String id; 
     double latitude;
     double longitude;

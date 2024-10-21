@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Driver {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private static Graph graph = new Graph();
+    // Stores node names
 
-    private Map<String, String> nodeNamesMap = new HashMap<>(); // Stores node names
-    private List<String> visitedNodes = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class Driver {
             scanner.nextLine(); // Consume newline
 
             switch (option) {
-                case 1:
+                case 1 -> {
                     System.out.println("Enter source eatery/node:");
                     String source = scanner.nextLine();
 
@@ -31,56 +31,40 @@ public class Driver {
                     scanner.nextLine(); // Consume newline
 
                     switch (choice) {
-                        case 1:
-                            bfs(source, destination);
-                            break;
-                        case 2:
-                            dfs(source, destination);
-                            break;
-                        case 3:
-                            ucs(source, destination);
-                            break;
-                        case 4:
-                            iddfs(source, destination);
-                            break;
-                        case 5:
-                            aStar(source, destination);
-                            break;
-                        case 6:
-                            greedyBFS(source, destination);
-                            break;
-                        default:
-                            System.out.println("Invalid choice");
-                            break;
+                        case 1 -> bfs(source, destination);
+                        case 2 -> dfs(source, destination);
+                        case 3 -> ucs(source, destination);
+                        case 4 -> iddfs(source, destination);
+                        case 5 -> aStar(source, destination);
+                        case 6 -> greedyBFS(source, destination);
+                        default -> System.out.println("Invalid choice");
                     }
                     System.out.println("Visited nodes: ");
-                    break;
+                }
 
-                case 2:
-                    //addNode(scanner);
-                    break;
 
-                case 3:
-                    //removeNode(scanner);
-                    break;
+                case 2 -> {
+                }
 
-                case 4:
-                    //viewNodeDetails(scanner);
-                    break;
+                case 3 -> {
+                }
 
-                case 5:
-                    viewAllNodes();
-                    break;
+                case 4 -> {
+                }
 
-                case 6:
+                case 5 -> viewAllNodes();
+
+                case 6 -> {
                     System.out.println("Exiting...");
                     return;
+                }
 
-                default:
-                    System.out.println("Invalid option");
-                    break;
+                default -> System.out.println("Invalid option");
             }
-        }
+            //addNode(scanner);
+            //removeNode(scanner);
+            //viewNodeDetails(scanner);
+                    }
     }
 
     private static void loadGraph() {
@@ -133,12 +117,44 @@ public class Driver {
     
    
     private static void viewAllNodes() {
-        
     }
 
+    
 
     private static void bfs(String source, String destination) {
-       
+        Map map = graph.getGraph();
+        
+        Queue<String> queue = new LinkedList<>();
+        // Set to track visited nodes
+        Set<String> visited = new HashSet<>();
+
+        // Enqueue the starting node and mark it as visited
+        queue.add(source);
+        visited.add(source);
+
+        while (!queue.isEmpty()) {
+            String currentNode = queue.poll();
+            System.out.println("Visited: " + currentNode);
+
+            // If the current node is the target node, stop
+            if (currentNode.equals(destination)) {
+                System.out.println("Destination node " + destination + " reached.");
+                break;
+            }
+            LinkedList<Edge> edges = (LinkedList<Edge>) map.get(currentNode);
+
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    String neighbor = edge.dest.id;
+
+                    // If neighbor hasn't been visited, enqueue it
+                    if (!visited.contains(neighbor)) {
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
     }
 
     private static void dfs(String source, String destination) {
