@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 public final class Graph{
@@ -6,6 +7,7 @@ public final class Graph{
 
     ArrayList<Node> upperTaftAveNodes;
     ArrayList<Node> lowerTaftAveNodes; 
+    ArrayList<Node> fidelReyesNodes;
 
     ArrayList<Node> nodeList; 
 
@@ -14,6 +16,7 @@ public final class Graph{
         //initialize adjacency lists for all the vertices
         this.upperTaftAveNodes = new ArrayList<>(); 
         this.lowerTaftAveNodes = new ArrayList<>();
+        this.fidelReyesNodes = new ArrayList<>();
         this.nodeList = new ArrayList<>(); 
         //initialize streets
         
@@ -34,12 +37,29 @@ public final class Graph{
                 addEgde("LTaft"+(i - 3), "LTaft"+i); 
             }
         }
-
+        for (int i = -90; i <= -24; i+=3){
+            Node fidelNode = new Node(i, -14, "FidelReyes"+i, false);
+            this.fidelReyesNodes.add(fidelNode);
+            addNode(fidelNode);
+            if (i > -90){
+                addEgde("FidelReyes"+(i - 3), "FidelReyes"+i); 
+            }
+        }
+        //set crossings
+        int[] taftAveCrossing = {-69, -51, -30, -9, 9};
+        for (int i = 0; i < 5; i++){
+            int x = taftAveCrossing[i];
+            Node crossing = new Node(x, 1, "TaftCrossing"+x, false);
+            addNode(crossing);
+            addEgde("LTaft"+x, "TaftCrossing"+x);
+            addEgde("UTaft"+x, "TaftCrossing"+x);
+        }
     }
 
     public  void addNode(Node node){
         adjacencyList.put(node.id, new LinkedList<>()); 
         nodeList.add(node); 
+     
     }
 
     public  void addEgde(String source, String destination) {
