@@ -129,45 +129,27 @@ public class Driver {
     
 
     private static void bfs(String source, String destination) {
-        Map<String, LinkedList<Edge>> map = graph.getGraph();
+        Set<String> visited = new HashSet<>();
+        Map<String, String> predecessors = new HashMap<>();
+        List<String> visitedOrder = new ArrayList<>();
     
         Queue<String> queue = new LinkedList<>();
-    
-        // Set to track visited nodes
-        Set<String> visited = new HashSet<>();
-    
-        // Map to track predecessors for reconstructing the path
-        Map<String, String> predecessors = new HashMap<>();
-    
-        // Enqueue the starting node and mark it as visited
         queue.add(source);
         visited.add(source);
-        predecessors.put(source, null); // Source has no predecessor
+        visitedOrder.add(source);
     
         boolean found = false;
-    
-        System.out.println("Visited Nodes: ");
-        int counter = 0; // To keep track of number of nodes printed per line
     
         while (!queue.isEmpty()) {
             String currentNode = queue.poll();
     
-            // Print the current node with formatted padding and an arrow
-            System.out.printf("-> %-20s", currentNode);
-            counter++;
-    
-            // Print new line every 4 nodes for better readability
-            if (counter % 4 == 0) {
-                System.out.println();
-            }
-    
-            // If the current node is the target node, stop
+            // If we reached the destination
             if (currentNode.equals(destination)) {
                 found = true;
                 break;
             }
     
-            LinkedList<Edge> edges = map.get(currentNode);
+            LinkedList<Edge> edges = graph.adjacencyList.get(currentNode);
     
             if (edges != null) {
                 for (Edge edge : edges) {
@@ -177,46 +159,178 @@ public class Driver {
                     if (!visited.contains(neighbor)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
-                        predecessors.put(neighbor, currentNode); // Track predecessor
+                        visitedOrder.add(neighbor);
+                        predecessors.put(neighbor, currentNode);  // Track predecessor
                     }
                 }
             }
         }
     
-        System.out.println(); // Print a new line for better separation
+        System.out.println("Visited nodes: " + visitedOrder);
     
         if (!found) {
             System.out.println("No path found from " + source + " to " + destination);
         } else {
-            LinkedList<String> path = new LinkedList<>();
-            String step = destination;
-    
-            while (step != null) {
-                path.addFirst(step);
-                step = predecessors.get(step);
-            }
-    
-            System.out.println("Best path from " + source + " to " + destination + ": " + String.join(" -> ", path));
+            printPath(predecessors, source, destination);
         }
-    }
+    }    
     
     
 
     private static void dfs(String source, String destination) {
-        // Placeholder for dfs
+        Set<String> visited = new HashSet<>();
+        Map<String, String> predecessors = new HashMap<>();
+        List<String> visitedOrder = new ArrayList<>();
+        
+        dfsHelper(source, destination, visited, predecessors, visitedOrder);
+        
+        System.out.println("Visited nodes: " + visitedOrder);
+        if (predecessors.containsKey(destination)) {
+            printPath(predecessors, source, destination);
+        } else {
+            System.out.println("No path found from " + source + " to " + destination);
+        }
     }
-
-    private static void dfsHelper(String current, String destination, Set<String> visited) {
-        // Placeholder for dfs Helper
+    
+    private static void dfsHelper(String current, String destination, Set<String> visited, Map<String, String> predecessors, List<String> visitedOrder) {
+        visited.add(current);
+        visitedOrder.add(current);
+        
+        if (current.equals(destination)) {
+            return;
+        }
+    
+        LinkedList<Edge> edges = graph.adjacencyList.get(current);
+        
+        if (edges != null) {
+            for (Edge edge : edges) {
+                String neighbor = edge.dest.id;
+                if (!visited.contains(neighbor)) {
+                    predecessors.put(neighbor, current);
+                    dfsHelper(neighbor, destination, visited, predecessors, visitedOrder);
+                    if (predecessors.containsKey(destination)) return; // Stop early if destination found
+                }
+            }
+        }
     }
-
-    private static void ucs(String source, String destination) {
-        // Placeholder for Uniform Cost Search
+    
+    private static void printPath(Map<String, String> predecessors, String source, String destination) {
+        LinkedList<String> path = new LinkedList<>();
+        String step = destination;
+        
+        while (step != null) {
+            path.addFirst(step);
+            step = predecessors.get(step);
+        }
+        
+        System.out.println("\nBest path from " + source + " to " + destination + ": " + String.join(" -> ", path));
     }
+    
+    
+    
 
+    
     private static void iddfs(String source, String destination) {
-        // Placeholder for Iterative Deepening Depth First Search
+        int depth = 0;
+        List<String> visitedOrder = new ArrayList<>();
+        
+        while (true) {
+            Set<String> visited = new HashSet<>();
+            Map<String, String> predecessors = new HashMap<>();
+            
+            boolean found = dls(source, destination, depth, visited, predecessors, visitedOrder);
+            if (found) {
+                System.out.println("Visited nodes: " + visitedOrder);
+                printPath(predecessors, source, destination);
+                return;
+            }
+            
+            if (visitedOrder.contains(destination)) {
+                System.out.println("No path found from " + source + " to " + destination);
+                return;
+            }
+            
+            depth++;
+            visitedOrder.clear(); // Clear visited nodes for the next depth level
+        }
     }
+    
+    private static boolean dls(String current, String destination, int depth, Set<String> visited, Map<String, String> predecessors, List<String> visitedOrder) {
+        visited.add(current);
+        visitedOrder.add(current);
+        
+        if (depth == 0 && current.equals(destination)) {
+            return true;
+        }
+        if (depth > 0) {
+            LinkedList<Edge> edges = graph.adjacencyList.get(current);
+            
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    String neighbor = edge.dest.id;
+                    if (!visited.contains(neighbor)) {
+                        predecessors.put(neighbor, current);
+                        boolean found = dls(neighbor, destination, depth - 1, visited, predecessors, visitedOrder);
+                        if (found) return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    
+    
+    private static void ucs(String source, String destination) {
+        PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
+        Set<String> visited = new HashSet<>();
+        Map<String, String> predecessors = new HashMap<>();
+        List<String> visitedOrder = new ArrayList<>();
+        
+        frontier.add(new NodeCost(source, 0.0));
+        
+        while (!frontier.isEmpty()) {
+            NodeCost current = frontier.poll();
+            
+            if (visited.contains(current.node)) continue;
+            visited.add(current.node);
+            visitedOrder.add(current.node);
+            
+            if (current.node.equals(destination)) {
+                System.out.println("Visited nodes: " + visitedOrder);
+                printPath(predecessors, source, destination);
+                return;
+            }
+            
+            LinkedList<Edge> edges = graph.adjacencyList.get(current.node);
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    String neighbor = edge.dest.id;
+                    double newCost = current.cost + edge.weight;
+                    if (!visited.contains(neighbor)) {
+                        predecessors.put(neighbor, current.node);
+                        frontier.add(new NodeCost(neighbor, newCost));
+                    }
+                }
+            }
+        }
+        
+        System.out.println("No path found from " + source + " to " + destination);
+        System.out.println("Visited nodes: " + visitedOrder);
+    }
+    
+    
+    private static class NodeCost {
+        String node;
+        double cost;  // Use double for cost
+    
+        public NodeCost(String node, double cost) {
+            this.node = node;
+            this.cost = cost;
+        }
+    }    
+    
 
     private static void aStar(String source, String destination) {
         // Placeholder for A* Search
