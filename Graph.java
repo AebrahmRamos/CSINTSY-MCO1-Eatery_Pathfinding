@@ -62,6 +62,34 @@ public final class Graph{
      
     }
 
+    // Removing a node from the graph
+    public void removeNode(String nodeId) {
+        // Remove from nodeList
+        nodeList.removeIf(node -> node.id.equals(nodeId));
+
+        // Remove all edges associated with the node in adjacency list
+        adjacencyList.remove(nodeId);
+
+        // Remove edges pointing to this node in other nodes' adjacency lists
+        for (LinkedList<Edge> edges : adjacencyList.values()) {
+            edges.removeIf(edge -> edge.dest.id.equals(nodeId)); // if dest is a Node
+        }
+    }
+
+    // View a node's information
+    public void viewNode(String nodeId) {
+        for (Node node : nodeList) {
+            if (node.id.equals(nodeId)) {
+                System.out.println("Node ID: " + node.id);
+                System.out.println("Latitude: " + node.latitude);
+                System.out.println("Longitude: " + node.longitude);
+                System.out.println("Is Eatery: " + node.isEatery);
+                return;
+            }
+        }
+        System.out.println("Node not found: " + nodeId);
+    }
+
     public  void addEgde(String source, String destination) {
         Node nodeA = getNodeById(source);
         Node nodeB = getNodeById(destination);

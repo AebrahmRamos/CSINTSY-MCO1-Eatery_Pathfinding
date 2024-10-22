@@ -47,14 +47,39 @@ public class Driver {
 
 
                 case 2 -> {
+                    System.out.println("Enter Node ID:");
+                    String nodeId = scanner.nextLine();
+
+                    System.out.println("Enter Latitude:");
+                    double latitude = scanner.nextDouble();
+
+                    System.out.println("Enter Longitude:");
+                    double longitude = scanner.nextDouble();
+
+                    System.out.println("Is it an eatery? (true/false):");
+                    boolean isEatery = scanner.nextBoolean();
+
+                    Node newNode = new Node(latitude, longitude, nodeId, isEatery);
+                    graph.addNode(newNode);
+                    System.out.println("Node added successfully!");
                 }
 
+                // Remove Node
                 case 3 -> {
+                    System.out.println("Enter Node ID to remove:");
+                    String nodeId = scanner.nextLine();
+                    graph.removeNode(nodeId);
+                    System.out.println("Node removed successfully!");
                 }
 
+                // View Node Details
                 case 4 -> {
+                    System.out.println("Enter Node ID to view:");
+                    String nodeId = scanner.nextLine();
+                    graph.viewNode(nodeId);
                 }
 
+                // View All Nodes
                 case 5 -> viewAllNodes();
 
                 case 6 -> {
