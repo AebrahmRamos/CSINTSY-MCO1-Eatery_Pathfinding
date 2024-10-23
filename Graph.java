@@ -21,32 +21,33 @@ public final class Graph{
         //initialize streets
         
         //upper taft ave (y = 5) {-80 < x 50}
-        for (int i = -81; i<= 51; i+=3){
+        for (int i = -80; i<= 50; i+=5){
             Node taftAveNode = new Node(i, 5, "UTaft"+i, false);
+            
             this.upperTaftAveNodes.add(taftAveNode);
             addNode(taftAveNode);
-            if (i > -81){
-                addEgde("UTaft"+(i - 3), "UTaft"+i);
+            if (i > -80){
+                addEgde("UTaft"+(i - 5), "UTaft"+i);
             }
         }
-        for (int i = -81; i <= 51; i+=3){
+        for (int i = -80; i <= 50; i+=5){
             Node taftAveNode = new Node(i, -3, "LTaft"+i, false);
             this.lowerTaftAveNodes.add(taftAveNode);
             addNode(taftAveNode);
-            if (i > -81){
-                addEgde("LTaft"+(i - 3), "LTaft"+i); 
+            if (i > -80){
+                addEgde("LTaft"+(i - 5), "LTaft"+i); 
             }
         }
-        for (int i = -90; i <= -24; i+=3){
+        for (int i = -90; i <= -20; i+=5){
             Node fidelNode = new Node(i, -14, "FidelReyes"+i, false);
             this.fidelReyesNodes.add(fidelNode);
             addNode(fidelNode);
             if (i > -90){
-                addEgde("FidelReyes"+(i - 3), "FidelReyes"+i); 
+                addEgde("FidelReyes"+(i - 5), "FidelReyes"+i); 
             }
         }
         //set crossings
-        int[] taftAveCrossing = {-69, -51, -30, -9, 9};
+        int[] taftAveCrossing = {-70, -50, -30, -10, 10};
         for (int i = 0; i < 5; i++){
             int x = taftAveCrossing[i];
             Node crossing = new Node(x, 1, "TaftCrossing"+x, false);
@@ -117,9 +118,9 @@ public final class Graph{
         for (Map.Entry<String, LinkedList<Edge>> entry : adjacencyList.entrySet()){
             LinkedList<Edge> list = entry.getValue(); 
             for (int j = 0; j <list.size() ; j++) {
-                System.out.print(entry.getKey() + " is connected to " +
-                        list.get(j).dest.id + " with weight ");
-                System.out.printf("%2f. \n", list.get(j).weight);
+                System.out.print(entry.getKey() + " " +
+                        list.get(j).dest.id + " ");
+                System.out.printf("%2f \n", list.get(j).weight);
             }
         }
     }
