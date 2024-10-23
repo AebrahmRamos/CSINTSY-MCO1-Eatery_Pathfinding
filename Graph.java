@@ -92,6 +92,8 @@ public final class Graph{
     }
 
     public  void addEgde(String source, String destination) {
+        System.out.println(source); 
+        System.out.println(destination); 
         Node nodeA = getNodeById(source);
         Node nodeB = getNodeById(destination);
         Edge edge = new Edge(nodeA, nodeB);
