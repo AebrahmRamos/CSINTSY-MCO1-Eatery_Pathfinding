@@ -358,10 +358,82 @@ public class Driver {
     
 
     private static void aStar(String source, String destination) {
-        // Placeholder for A* Search
+        PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
+        Set<String> visited = new HashSet<>();
+        Map<String, String> predecessors = new HashMap<>();
+        List<String> visitedOrder = new ArrayList<>();
+
+        Node destinationNode = graph.getNodeById(destination); 
+        
+        frontier.add(new NodeCost(source, 0.0));
+        
+        while (!frontier.isEmpty()) {
+            NodeCost current = frontier.poll();
+            
+            if (visited.contains(current.node)) continue;
+            visited.add(current.node);
+            visitedOrder.add(current.node);
+            
+            if (current.node.equals(destination)) {
+                System.out.println("Visited nodes: " + visitedOrder);
+                printPath(predecessors, source, destination);
+                return;
+            }
+            
+            LinkedList<Edge> edges = graph.adjacencyList.get(current.node);
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    String neighbor = edge.dest.id;
+                    double newCost = edge.dest.getManhattanDist(destinationNode) + edge.weight;
+                    if (!visited.contains(neighbor)) {
+                        predecessors.put(neighbor, current.node);
+                        frontier.add(new NodeCost(neighbor, newCost));
+                    }
+                }
+            }
+        }
+        
+        System.out.println("No path found from " + source + " to " + destination);
+        System.out.println("Visited nodes: " + visitedOrder);
     }
 
     private static void greedyBFS(String source, String destination) {
-        // Placeholder for Greedy Best-First Search
+        PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
+        Set<String> visited = new HashSet<>();
+        Map<String, String> predecessors = new HashMap<>();
+        List<String> visitedOrder = new ArrayList<>();
+
+        Node destinationNode = graph.getNodeById(destination); 
+        
+        frontier.add(new NodeCost(source, 0.0));
+        
+        while (!frontier.isEmpty()) {
+            NodeCost current = frontier.poll();
+            
+            if (visited.contains(current.node)) continue;
+            visited.add(current.node);
+            visitedOrder.add(current.node);
+            
+            if (current.node.equals(destination)) {
+                System.out.println("Visited nodes: " + visitedOrder);
+                printPath(predecessors, source, destination);
+                return;
+            }
+            
+            LinkedList<Edge> edges = graph.adjacencyList.get(current.node);
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    String neighbor = edge.dest.id;
+                    double newCost = edge.dest.getManhattanDist(destinationNode);
+                    if (!visited.contains(neighbor)) {
+                        predecessors.put(neighbor, current.node);
+                        frontier.add(new NodeCost(neighbor, newCost));
+                    }
+                }
+            }
+        }
+        
+        System.out.println("No path found from " + source + " to " + destination);
+        System.out.println("Visited nodes: " + visitedOrder);
     }
 }

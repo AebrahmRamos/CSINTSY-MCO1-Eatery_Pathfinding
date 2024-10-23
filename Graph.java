@@ -91,9 +91,7 @@ public final class Graph{
         System.out.println("Node not found: " + nodeId);
     }
 
-    public  void addEgde(String source, String destination) {
-        System.out.println(source); 
-        System.out.println(destination); 
+    public  void addEgde(String source, String destination) { 
         Node nodeA = getNodeById(source);
         Node nodeB = getNodeById(destination);
         Edge edge = new Edge(nodeA, nodeB);

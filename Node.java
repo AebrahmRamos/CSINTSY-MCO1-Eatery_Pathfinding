@@ -5,11 +5,20 @@ public class Node {
     double latitude;
     double longitude;
     boolean isEatery; 
+    
+    double crowdedness; 
 
     public Node(double latitude, double longitude, String id, boolean isEatery) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.id = id;
         this.isEatery = isEatery;
-    }    
+    }
+
+    public double getManhattanDist(Node dest){
+        double x2 = dest.latitude; 
+        double y2 = dest.longitude; 
+
+        return Math.abs(this.latitude-x2) + Math.abs(this.longitude-y2);
+    }
 }
