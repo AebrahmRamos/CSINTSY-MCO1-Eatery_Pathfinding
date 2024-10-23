@@ -1,8 +1,10 @@
+import java.util.Random;
 
 public class Edge {
     Node dest;
     Node src;
     double weight;
+    Random rand = new Random(); 
 
     public Edge(Node src, Node dest) {
         this.src = src;
@@ -17,7 +19,9 @@ public class Edge {
         double x2 = dest.latitude; 
         double y2 = dest.longitude;
 
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double distance =  Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double randomFactor = 1 + (rand.nextDouble() * 0.2 - 0.1);  // range from 0.9 to 1.1
+        return distance;
     }
 
    
