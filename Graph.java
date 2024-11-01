@@ -8,6 +8,7 @@ public final class Graph{
     ArrayList<Node> upperTaftAveNodes;
     ArrayList<Node> lowerTaftAveNodes; 
     ArrayList<Node> fidelReyesNodes;
+    ArrayList<Node> leonGuintoNodes;
 
     ArrayList<Node> nodeList; 
 
@@ -17,6 +18,7 @@ public final class Graph{
         this.upperTaftAveNodes = new ArrayList<>(); 
         this.lowerTaftAveNodes = new ArrayList<>();
         this.fidelReyesNodes = new ArrayList<>();
+        this.leonGuintoNodes = new ArrayList<>();
         this.nodeList = new ArrayList<>(); 
         //initialize streets
         
@@ -44,6 +46,14 @@ public final class Graph{
             addNode(fidelNode);
             if (i > -90){
                 addEgde("FidelReyes"+(i - 5), "FidelReyes"+i); 
+            }
+        }
+        for (int i = -80; i <= 50; i+=5){
+            Node leonGuintoNode = new Node(i, 20, "LeonGuinto"+i, false);
+            this.leonGuintoNodes.add(leonGuintoNode);
+            addNode(leonGuintoNode);
+            if (i > -80){
+                addEgde("LeonGuinto"+(i - 5), "LeonGuinto"+i);
             }
         }
         //set crossings
