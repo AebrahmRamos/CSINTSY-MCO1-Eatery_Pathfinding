@@ -5,14 +5,15 @@ public class Node {
     double latitude;
     double longitude;
     boolean isEatery; 
-    
+    int rating; 
     double crowdedness; 
 
-    public Node(double latitude, double longitude, String id, boolean isEatery) {
+    public Node(double latitude, double longitude, String id, boolean isEatery, int rating) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.id = id;
         this.isEatery = isEatery;
+        this.rating = rating; 
     }
 
     public double getManhattanDist(Node dest){

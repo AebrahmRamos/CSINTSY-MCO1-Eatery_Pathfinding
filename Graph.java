@@ -22,7 +22,7 @@ public final class Graph{
         
         //upper taft ave (y = 5) {-80 < x 50}
         for (int i = -80; i<= 50; i+=5){
-            Node taftAveNode = new Node(i, 5, "UTaft"+i, false);
+            Node taftAveNode = new Node(i, 5, "UTaft"+i, false, -1);
             
             this.upperTaftAveNodes.add(taftAveNode);
             addNode(taftAveNode);
@@ -31,7 +31,7 @@ public final class Graph{
             }
         }
         for (int i = -80; i <= 50; i+=5){
-            Node taftAveNode = new Node(i, -3, "LTaft"+i, false);
+            Node taftAveNode = new Node(i, -3, "LTaft"+i, false, -1);
             this.lowerTaftAveNodes.add(taftAveNode);
             addNode(taftAveNode);
             if (i > -80){
@@ -39,7 +39,7 @@ public final class Graph{
             }
         }
         for (int i = -90; i <= -20; i+=5){
-            Node fidelNode = new Node(i, -14, "FidelReyes"+i, false);
+            Node fidelNode = new Node(i, -14, "FidelReyes"+i, false, -1);
             this.fidelReyesNodes.add(fidelNode);
             addNode(fidelNode);
             if (i > -90){
@@ -50,7 +50,7 @@ public final class Graph{
         int[] taftAveCrossing = {-70, -50, -30, -10, 10};
         for (int i = 0; i < 5; i++){
             int x = taftAveCrossing[i];
-            Node crossing = new Node(x, 1, "TaftCrossing"+x, false);
+            Node crossing = new Node(x, 1, "TaftCrossing"+x, false, -1);
             addNode(crossing);
             addEgde("LTaft"+x, "TaftCrossing"+x);
             addEgde("UTaft"+x, "TaftCrossing"+x);
@@ -85,6 +85,7 @@ public final class Graph{
                 System.out.println("Latitude: " + node.latitude);
                 System.out.println("Longitude: " + node.longitude);
                 System.out.println("Is Eatery: " + node.isEatery);
+                System.out.println("Rating: " + node.rating); 
                 return;
             }
         }
@@ -123,6 +124,15 @@ public final class Graph{
                 System.out.printf("%2f \n", list.get(j).weight);
             }
         }
+    }
+
+    public ArrayList<Node> getEateries(){
+        ArrayList<Node> eateriesArrayList = new ArrayList<>(); 
+        for(Node node: nodeList){
+            if (node.isEatery)
+                eateriesArrayList.add(node);
+        }
+        return eateriesArrayList; 
     }
 
     

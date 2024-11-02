@@ -20,23 +20,41 @@ public class Driver {
 
             switch (option) {
                 case 1 -> {
-                    System.out.println("Enter source eatery/node:");
-                    String source = scanner.nextLine();
+                    
+                    String source = "", destination = ""; 
+                    System.out.println("Select algorithm: 1 for BFS, 2 for DFS, 3 for UCS, 4 for ID-DFS, 5 for Heuristic Search (Manhattan Distance), 6 for Heuristic Search (Rating)");
 
-                    System.out.println("Enter destination eatery/node:");
-                    String destination = scanner.nextLine();
-
-                    System.out.println("Select algorithm: 1 for BFS, 2 for DFS, 3 for UCS, 4 for ID-DFS, 5 for A*, 6 for Greedy BFS");
-                    int choice = scanner.nextInt();
+                    int choice = scanner.nextInt(), alg = 0, rating = 0; 
                     scanner.nextLine(); // Consume newline
+                    System.out.println("Enter source eatery/node:");
+
+                    source = scanner.nextLine();
+                    if (1<= choice && choice <= 5){
+                        System.out.println("Enter destination eatery/node:");
+                        destination = scanner.nextLine();
+
+                    }
+                    if (choice >= 5){
+                        System.out.println("Select algorithm: 1 for A* Search, 2 for Greedy BFS");
+                        alg = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+                        if (choice == 6){
+                            while (rating < 1 || rating > 5){
+                                System.out.println("Enter minimum eatery rating (1-5): "); 
+                                rating = scanner.nextInt(); 
+                                scanner.nextLine(); 
+                            }                            
+                        }
+                    }
+
                     long startTime = System.currentTimeMillis(), endTime, executionTime;
                     switch (choice) {
                         case 1 -> bfs(source, destination);
                         case 2 -> dfs(source, destination);
                         case 3 -> ucs(source, destination);
                         case 4 -> iddfs(source, destination);
-                        case 5 -> aStar(source, destination);
-                        case 6 -> greedyBFS(source, destination);
+                        case 5 -> manhattanDistance(source, destination, alg);
+                        case 6 -> ratingSearch(source, rating, alg);
                         default -> System.out.println("Invalid choice");
                     }
                     // System.out.println("Visited nodes: ");
@@ -59,7 +77,7 @@ public class Driver {
                     System.out.println("Is it an eatery? (true/false):");
                     boolean isEatery = scanner.nextBoolean();
 
-                    Node newNode = new Node(latitude, longitude, nodeId, isEatery);
+                    Node newNode = new Node(latitude, longitude, nodeId, isEatery, 0);
                     graph.addNode(newNode);
                     System.out.println("Node added successfully!");
                 }
@@ -108,13 +126,13 @@ public class Driver {
                     continue;
                 }
                 String[] parts = line.split(",");
-                if (parts.length >= 4) {
+                if (parts.length >= 5) {
                     String nodeName = parts[0].trim();
                     double latitude = Double.parseDouble(parts[1].trim());
                     double longitude = Double.parseDouble(parts[2].trim());
                     boolean isEatery = Boolean.parseBoolean(parts[3].trim()); 
-
-                    Node node = new Node(latitude, longitude, nodeName, isEatery); 
+                    int rating = Integer.parseInt(parts[4].trim()); 
+                    Node node = new Node(latitude, longitude, nodeName, isEatery, rating); 
                     graph.addNode(node); 
                 }
             }
@@ -141,8 +159,6 @@ public class Driver {
             System.err.println("Error reading CSV files: " + e.getMessage());
         }
     }
-
-    
    
     private static void viewAllNodes() {
         Map<String, LinkedList<Edge>> graphMap = graph.getGraph();
@@ -151,7 +167,7 @@ public class Driver {
         }
     }
 
-    
+
 
     private static void bfs(String source, String destination) {
         Set<String> visited = new HashSet<>();
@@ -199,9 +215,7 @@ public class Driver {
             printPath(predecessors, source, destination);
         }
     }    
-    
-    
-
+     
     private static void dfs(String source, String destination) {
         Set<String> visited = new HashSet<>();
         Map<String, String> predecessors = new HashMap<>();
@@ -251,10 +265,6 @@ public class Driver {
         System.out.println("\nBest path from " + source + " to " + destination + ": " + String.join(" -> ", path));
     }
     
-    
-    
-
-    
     private static void iddfs(String source, String destination) {
         int depth = 0;
         List<String> visitedOrder = new ArrayList<>();
@@ -303,9 +313,7 @@ public class Driver {
         }
         
         return false;
-    }
-    
-    
+    }   
     
     private static void ucs(String source, String destination) {
         PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
@@ -356,6 +364,35 @@ public class Driver {
         }
     }    
     
+    private static void manhattanDistance(String source, String destination, int choice){
+       if (choice == 1) 
+            aStar(source, destination);
+        else
+            greedyBFS(source, destination);
+
+    }
+
+    private static void ratingSearch(String source, int rating, int choice){
+        String destination; 
+        ArrayList<Node> eateries = graph.getEateries(); 
+        PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
+
+        eateries.removeIf(eatery -> ((eatery.rating < rating) || (eatery.id.equals(source))));
+        for (Node eatery: eateries){
+            System.out.println(eatery.id); 
+        }
+        Node srcNode = graph.getNodeById(source); 
+        for (Node eatery : eateries) {
+            frontier.add(new NodeCost(eatery.id, srcNode.getManhattanDist(eatery)));
+        }
+        destination = frontier.peek().node; 
+        System.out.println("\nNearest eatery with a rating of at least " + rating + " is " + destination);
+        
+        if (choice == 1)
+            aStar(source, destination);
+        else
+            greedyBFS(source, destination);
+    }
 
     private static void aStar(String source, String destination) {
         PriorityQueue<NodeCost> frontier = new PriorityQueue<>(Comparator.comparingDouble(n -> n.cost));
