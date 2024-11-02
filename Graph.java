@@ -37,7 +37,7 @@ public final class Graph{
             this.lowerTaftAveNodes.add(taftAveNode);
             addNode(taftAveNode);
             if(i == -55){
-                Node castroCrossingNode = new Node((i+2), -3, "LTaft"+(i+2), false);
+                Node castroCrossingNode = new Node((i+2), -3, "LTaft"+(i+2), false, -1);
                 this.lowerTaftAveNodes.add(castroCrossingNode);
                 addNode(castroCrossingNode);
             }
@@ -58,13 +58,14 @@ public final class Graph{
             this.fidelReyesNodes.add(fidelNode);
             addNode(fidelNode);
             if(i == -55){
-                Node castroCrossingNode = new Node((i+2), -14, "FidelReyes"+(i+2), false);
+                Node castroCrossingNode = new Node((i+2), -14, "FidelReyes"+(i+2), false, -1);
                 this.fidelReyesNodes.add(castroCrossingNode);
                 addNode(castroCrossingNode);
             }
             if (i > -90){
                 if(i == -55){
                     addEgde("FidelReyes"+i, "FidelReyes"+(i+2));
+                    addEgde("FidelReyes"+i,  "FidelReyes"+(i-5));
                 }
                 else if(i == -50){
                     addEgde("FidelReyes"+(i-3), "FidelReyes"+i);
@@ -75,7 +76,7 @@ public final class Graph{
             }
         }
         for (int i = -80; i <= 50; i+=5){
-            Node leonGuintoNode = new Node(i, 15, "LeonGuinto"+i, false);
+            Node leonGuintoNode = new Node(i, 15, "LeonGuinto"+i, false, -1);
             this.leonGuintoNodes.add(leonGuintoNode);
             addNode(leonGuintoNode);
             if (i > -80){
@@ -92,17 +93,17 @@ public final class Graph{
             addEgde("UTaft"+x, "TaftCrossing"+x);
         }
         
-        Node castroStreetCrossing = new Node(-53, -9, "CastroStreetCrossing-53", false);
+        Node castroStreetCrossing = new Node(-53, -9, "CastroStreetCrossing-53", false, -1);
         addNode(castroStreetCrossing);
         addEgde("FidelReyes-53", "CastroStreetCrossing-53");
         addEgde("LTaft-53", "CastroStreetCrossing-53");
 
-        Node dagonoyStreetCrossing = new Node(-25, 10, "DagonoyStreetCrossing-25", false);
+        Node dagonoyStreetCrossing = new Node(-25, 10, "DagonoyStreetCrossing-25", false, -1);
         addNode(dagonoyStreetCrossing);
         addEgde("LeonGuinto-25", "DagonoyStreetCrossing-25");
         addEgde("UTaft-25", "DagonoyStreetCrossing-25");
 
-        Node estradaStreetCrossing = new Node(15, 10, "EstradaStreetCrossing15", false);
+        Node estradaStreetCrossing = new Node(15, 10, "EstradaStreetCrossing15", false, -1);
         addNode(estradaStreetCrossing);
         addEgde("LeonGuinto15", "EstradaStreetCrossing15");
         addEgde("UTaft15", "EstradaStreetCrossing15");

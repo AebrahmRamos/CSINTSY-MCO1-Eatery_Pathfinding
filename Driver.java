@@ -192,16 +192,20 @@ public class Driver {
     
             LinkedList<Edge> edges = graph.adjacencyList.get(currentNode);
     
-            if (edges != null) {
+            if (edges != null && !found) {
                 for (Edge edge : edges) {
-                    String neighbor = edge.dest.id;
-    
+                    String neighbor = edge.dest.id; 
                     // If neighbor hasn't been visited, enqueue it
                     if (!visited.contains(neighbor)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
                         visitedOrder.add(neighbor);
                         predecessors.put(neighbor, currentNode);  // Track predecessor
+                    }
+                    if (neighbor.equals(destination)){
+                        queue.clear(); 
+                        found = true; 
+                        break;
                     }
                 }
             }
